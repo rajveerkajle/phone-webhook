@@ -34,7 +34,7 @@ jobs:
 
       - name: Build docker image
         run: |
-          IMAGE="${{ vars.REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ vars.REPO }}/${{ vars.SERVICE_NAME }}:${{ github.sha }}"
+          IMAGE="us-central1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ vars.REPO }}/${{ vars.SERVICE_NAME }}:${{ github.sha }}"
           docker build -t "$IMAGE" .
 
       - name: push docker image
