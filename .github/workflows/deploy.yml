@@ -30,7 +30,7 @@ jobs:
           project_id: ${{ secrets.PROJECT_ID }}
 
       - name: configure docker
-        run: gcloud auth configure-docker ${{ vars.REGION }}-docker.pkg.dev
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
       - name: Build docker image
         run: |
