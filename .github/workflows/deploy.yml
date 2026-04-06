@@ -34,20 +34,20 @@ jobs:
 
       - name: Build docker image
         run: |
-          IMAGE="us-central1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ vars.REPO }}/${{ vars.SERVICE_NAME }}:${{ github.sha }}"
+          IMAGE="us-central1-docker.pkg.dev/learning-486607/https://github.com/rajveerkajle/phone-webhook.git/webhook-cicd:${{ github.sha }}"
           docker build -t "$IMAGE" .
 
       - name: push docker image
         run: |
-          IMAGE="${{ vars.REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ vars.REPO }}/${{ vars.SERVICE_NAME }}:${{ github.sha }}"
+          IMAGE="us-central1-docker.pkg.dev/learning-486607/https://github.com/rajveerkajle/phone-webhook.git/webhook-cicd:${{ github.sha }}"
           docker push "$IMAGE"
       - name: deploy to cloud run
         run: |
-          IMAGE="${{ vars.REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ vars.REPO }}/${{ vars.SERVICE_NAME }}:${{ github.sha }}"
-          gcloud run deploy ${{ vars.SERVICE_NAME }} \
+          IMAGE="us-central1-docker.pkg.dev/learning-486607/https://github.com/rajveerkajle/phone-webhook.git/webhook-cicd:${{ github.sha }}"
+          gcloud run deploy webhook-cicd \
             --image "$IMAGE" \
-            --region ${{ vars.REGION }} \
-            --service-account sa-webhook-runtime@${{ secrets.PROJECT_ID }}.iam.gserviceaccount.com \
+            --region us-central1 \
+            --service-account sa-webhook-runtime@learning-486607.iam.gserviceaccount.com \
             --platform managed \
             --allow-unauthenticated
 
