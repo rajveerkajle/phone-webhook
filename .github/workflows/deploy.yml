@@ -46,7 +46,7 @@ jobs:
           IMAGE="us-central1-docker.pkg.dev/learning-486607/cloud-run-source-deploy/webhook-cicd:${{ github.sha }}"
           gcloud run deploy webhook-cicd \
             --image "$IMAGE" \
-            --set-env-vars "TWILIO_ACCOUNT_SID=ACf6569de962753c04d1498f2c3e04ac8d,TWILIO_AUTH_TOKEN=1adccb2bf505c155c31193652475a6b0,TWILIO_VERIFY_SERVICE_SID=VA3598aa87911d774d111ff09deefd5f84"
+            --set-env-vars "TWILIO_ACCOUNT_SID=ACf6569de962753c04d1498f2c3e04ac8d,TWILIO_AUTH_TOKEN=1adccb2bf505c155c31193652475a6b0,TWILIO_VERIFY_SERVICE_SID=VA3598aa87911d774d111ff09deefd5f84" /
             --region us-central1 \
             --service-account sa-webhook-runtime@learning-486607.iam.gserviceaccount.com \
             --platform managed \
