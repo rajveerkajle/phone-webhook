@@ -34,7 +34,7 @@ jobs:
 
       - name: Build docker image
         run: |
-          IMAGE="us-central1-docker.pkg.dev/learning-486607/https://github.com/rajveerkajle/phone-webhook.git/webhook-cicd:${{ github.sha }}"
+          IMAGE="us-central1-docker.pkg.dev/learning-486607/cloud-run-source-deploy/webhook-cicd:${{ github.sha }}"
           docker build -t "$IMAGE" .
 
       - name: push docker image
