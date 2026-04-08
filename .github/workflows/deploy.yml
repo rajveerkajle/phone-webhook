@@ -21,35 +21,35 @@ jobs:
       - name: Google Auth
         uses: google-github-actions/auth@v3
         with:
-          workload_identity_provider: "projects/433552400758/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
           service_account: ${{ secrets.SERVICE_ACCOUNT }}
-          audience: "https://token.actions.githubusercontent.com"
+          audience: ${{ secrets.AUDIENCE }}
 
       - name: Configure gcloud
         uses: google-github-actions/setup-gcloud@v1
         with:
-          project_id: learning-486607
+          project_id: ${{ secrets.PROJECT_ID }}
 
       - name: configure docker
-        run: gcloud auth configure-docker us-central1-docker.pkg.dev
+        run: gcloud auth configure-docker ${{ vars.REGION }}-docker.pkg.dev
 
       - name: Build docker image
         run: |
-          IMAGE="us-central1-docker.pkg.dev/learning-486607/${{ vars.REPO }}/webhook-cicd:${{ github.sha }}"
+          IMAGE="${{ vars.REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ vars.REPO }}/webhook-cicd:${{ github.sha }}"
           docker build -t "$IMAGE" .
 
       - name: push docker image
         run: |
-          IMAGE="us-central1-docker.pkg.dev/learning-486607/${{ vars.REPO }}/webhook-cicd:${{ github.sha }}"
+          IMAGE="${{ vars.REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ vars.REPO }}/webhook-cicd:${{ github.sha }}"
           docker push "$IMAGE"
       - name: deploy to cloud run
         run: |
-          IMAGE="us-central1-docker.pkg.dev/learning-486607/${{ vars.REPO }}/webhook-cicd:${{ github.sha }}"
-          gcloud run deploy webhook-cicd \
+          IMAGE="${{ vars.REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ vars.REPO }}/webhook-cicd:${{ github.sha }}"
+          gcloud run deploy ${{ vars.SERVICE_NAME }} \
             --image "$IMAGE" \
             --set-env-vars "TWILIO_ACCOUNT_SID=ACf6569de962753c04d1498f2c3e04ac8d,TWILIO_AUTH_TOKEN=1adccb2bf505c155c31193652475a6b0,TWILIO_VERIFY_SERVICE_SID=VA3598aa87911d774d111ff09deefd5f84" \
-            --region us-central1 \
-            --service-account sa-webhook-runtime@learning-486607.iam.gserviceaccount.com \
+            --region ${{ vars.REGION }} \
+            --service-account ${{ secrets.RUNTIME_SERVICE_ACCOUNT }} \
             --platform managed \
             --allow-unauthenticated
 
