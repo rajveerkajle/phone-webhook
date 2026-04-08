@@ -39,7 +39,7 @@ jobs:
 
       - name: push docker image
         run: |
-          IMAGE="us-central1-docker.pkg.dev/learning-486607/cloud-run-source-deploy/webhook-cicd:${{ github.sha }}"
+          IMAGE="us-central1-docker.pkg.dev/learning-486607/${{ vars.REPO }}/webhook-cicd:${{ github.sha }}"
           docker push "$IMAGE"
       - name: deploy to cloud run
         run: |
