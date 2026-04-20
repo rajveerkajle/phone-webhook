@@ -52,6 +52,9 @@ jobs:
     runs-on: ubuntu-22.04
     needs: build
     environment: dev
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
       - name: Checkout source
