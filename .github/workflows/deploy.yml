@@ -32,10 +32,12 @@ jobs:
 
       - name: Configure Docker auth
         run: gcloud auth configure-docker ${{ vars.REGION }}-docker.pkg.dev
+        
   build:
     name: Build Docker Image
     runs-on: ubuntu-22.04
     needs: auth
+    environment: dev
 
     steps:
       - name: Checkout source
@@ -49,6 +51,7 @@ jobs:
     name: Push Docker Image
     runs-on: ubuntu-22.04
     needs: build
+    environment: dev
 
     steps:
       - name: Checkout source
