@@ -4,9 +4,6 @@ on:
   push:
     branches: ["main"]
 
-env:
-  IMAGE: ${{ vars.REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ vars.REPO }}/webhook-cicd:${{ github.sha }}
-
 jobs:
   auth:
     name: Authenticate & Setup GCP
@@ -46,7 +43,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t "$IMAGE" .
+          docker build -t ${{ vars.REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ vars.REPO }}/webhook-cicd:${{ github.sha }} .
 
   push:
     name: Push Docker Image
@@ -74,7 +71,7 @@ jobs:
 
       - name: Push Docker image
         run: |
-          docker push "$IMAGE"
+          docker push ${{ vars.REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ vars.REPO }}/webhook-cicd:${{ github.sha }}
 
   deploy:
     name: Deploy to Cloud Run
@@ -98,7 +95,7 @@ jobs:
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy ${{ vars.SERVICE_NAME }} \
-            --image "$IMAGE" \
+            --image ${{ vars.REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ vars.REPO }}/webhook-cicd:${{ github.sha }} \
             --region ${{ vars.REGION }} \
             --service-account ${{ secrets.RUNTIME_SERVICE_ACCOUNT }} \
             --platform managed \
